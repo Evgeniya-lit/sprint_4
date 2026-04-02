@@ -54,10 +54,11 @@ class TestBooksCollector:
         genre = collector.get_book_genre(book_name)
         assert genre == book_genre
 
-    def test_get_books_genre_returns_type_dict(self):
+    def test_get_books_genre_one_book(self):
         collector = BooksCollector()
+        collector.add_new_book('Каникулы в Простоквашино')
         books_genre = collector.get_books_genre()
-        assert isinstance(books_genre, dict)
+        assert books_genre == {'Каникулы в Простоквашино':''}
 
     @pytest.mark.parametrize('child_book, child_genre',[['Хроники Нарнии','Фантастика'],['Колобок','Мультфильмы'],['Каникулы в Простоквашино','Комедии']])
     def test_get_books_for_children_returns_child_books(self, child_book, child_genre):
@@ -101,9 +102,12 @@ class TestBooksCollector:
         favorites = collector.get_list_of_favorites_books()
         assert favorites == []
 
-    def test_get_list_of_favorites_books_returns_empty_list(self):
+    def test_get_list_of_favorites_books_two_books(self):
         collector = BooksCollector()
-        assert collector.get_list_of_favorites_books() == []
-
-
+        collector.add_new_book('Хроники Нарнии')
+        collector.add_book_in_favorites('Хроники Нарнии')
+        collector.add_new_book('Колобок')
+        collector.add_book_in_favorites('Колобок')
+        favorites = collector.get_list_of_favorites_books()
+        assert favorites ==['Хроники Нарнии','Колобок']
 
